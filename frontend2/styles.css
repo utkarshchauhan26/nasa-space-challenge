@@ -1,0 +1,342 @@
+/* NASA Air Quality Dashboard - Custom Styles */
+
+:root {
+    --nasa-blue: #0B3D91;
+    --nasa-red: #FC3D21;
+    --nasa-dark: #1a1a1a;
+    --nasa-light: #f8f9fa;
+    
+    /* AQI Colors */
+    --aqi-good: #00E400;
+    --aqi-moderate: #FFFF00;
+    --aqi-unhealthy-sensitive: #FF7E00;
+    --aqi-unhealthy: #FF0000;
+    --aqi-very-unhealthy: #8F3F97;
+    --aqi-hazardous: #7E0023;
+}
+
+/* Global Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--nasa-light);
+    color: var(--nasa-dark);
+}
+
+/* NASA Navbar */
+.nasa-navbar {
+    background: linear-gradient(135deg, var(--nasa-blue) 0%, var(--nasa-red) 100%);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    color: white !important;
+    font-size: 1.2rem;
+}
+
+.navbar-brand small {
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+.navbar-nav .nav-link {
+    color: rgba(255,255,255,0.9) !important;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: white !important;
+}
+
+/* AQI Card Styles */
+.aqi-card {
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.aqi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* AQI Display */
+.aqi-display {
+    text-align: center;
+}
+
+.aqi-number {
+    font-size: 4rem;
+    font-weight: bold;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.aqi-label {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.aqi-level {
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    color: white;
+}
+
+/* AQI Level Colors */
+.aqi-good { background-color: var(--aqi-good); color: #000; }
+.aqi-moderate { background-color: var(--aqi-moderate); color: #000; }
+.aqi-unhealthy-sensitive { background-color: var(--aqi-unhealthy-sensitive); }
+.aqi-unhealthy { background-color: var(--aqi-unhealthy); }
+.aqi-very-unhealthy { background-color: var(--aqi-very-unhealthy); }
+.aqi-hazardous { background-color: var(--aqi-hazardous); }
+
+/* Pollutant Values */
+.pollutant-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.pollutant-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--nasa-blue);
+    margin-bottom: 0.25rem;
+}
+
+.pollutant-unit {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 2px solid #f0f0f0;
+    font-weight: 600;
+}
+
+/* Chart Container */
+#forecastChart {
+    max-height: 300px;
+}
+
+/* Map Styles */
+#map {
+    border-radius: 0.375rem;
+}
+
+/* Status Indicators */
+.status-indicator {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.status-online { background-color: #28a745; }
+.status-offline { background-color: #dc3545; }
+.status-warning { background-color: #ffc107; }
+
+/* Data Source Cards */
+.data-source-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.data-source-card:hover {
+    transform: translateY(-2px);
+}
+
+.data-source-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Loading Spinner */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .aqi-number {
+        font-size: 3rem;
+    }
+    
+    .pollutant-value {
+        font-size: 1.2rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1rem;
+    }
+    
+    .navbar-brand small {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .aqi-number {
+        font-size: 2.5rem;
+    }
+    
+    .pollutant-value {
+        font-size: 1rem;
+    }
+    
+    .container-fluid {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--nasa-blue);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--nasa-red);
+}
+
+/* Toast Styles */
+.toast {
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* Form Controls */
+.form-select:focus,
+.form-control:focus {
+    border-color: var(--nasa-blue);
+    box-shadow: 0 0 0 0.2rem rgba(11, 61, 145, 0.25);
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: var(--nasa-blue);
+    border-color: var(--nasa-blue);
+}
+
+.btn-primary:hover {
+    background-color: #0a2d7a;
+    border-color: #0a2d7a;
+}
+
+.btn-outline-primary {
+    color: var(--nasa-blue);
+    border-color: var(--nasa-blue);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--nasa-blue);
+    border-color: var(--nasa-blue);
+}
+
+/* Badge Styles */
+.badge {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
+}
+
+/* Utility Classes */
+.text-nasa-blue { color: var(--nasa-blue) !important; }
+.text-nasa-red { color: var(--nasa-red) !important; }
+.bg-nasa-blue { background-color: var(--nasa-blue) !important; }
+.bg-nasa-red { background-color: var(--nasa-red) !important; }
+
+/* Leaflet Map Customization */
+.leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.leaflet-popup-content {
+    margin: 12px;
+    font-size: 14px;
+}
+
+/* Chart.js Customization */
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid var(--nasa-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

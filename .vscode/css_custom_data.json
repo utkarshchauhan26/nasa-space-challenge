@@ -1,0 +1,37 @@
+{
+  "version": 1.1,
+  "atDirectives": [
+    {
+      "name": "@apply",
+      "description": "Use @apply to inline any existing utility classes into your own custom CSS."
+    },
+    {
+      "name": "@layer",
+      "description": "Use @layer to tell Tailwind which 'bucket' a set of custom styles belong to."
+    },
+    {
+      "name": "@responsive",
+      "description": "Generate responsive variants of your own utilities by wrapping their definitions in the @responsive directive."
+    },
+    {
+      "name": "@screen",
+      "description": "Create media queries that reference your breakpoints by name instead of duplicating their values in your own CSS."
+    },
+    {
+      "name": "@variants",
+      "description": "Generate hover, focus, active and other variants of your own utilities by wrapping their definitions in the @variants directive."
+    },
+    {
+      "name": "@custom-variant", 
+      "description": "Define custom variants for Tailwind CSS."
+    },
+    {
+      "name": "@theme",
+      "description": "Use the @theme directive to access your Tailwind config values using dot notation."
+    },
+    {
+      "name": "@config",
+      "description": "Use the @config directive to specify which config file Tailwind should use when compiling that CSS file."
+    }
+  ]
+}

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Air Quality Dashboard</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar navbar-expand-lg nasa-navbar">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="fas fa-satellite me-2"></i>
+                <div>
+                    <span class="fw-bold">NASA Air Quality</span>
+                    <small class="d-block">Real-time Satellite Monitoring</small>
+                </div>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#forecast">Forecast</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#map">Map</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#status">Status</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#alerts">Alerts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#compare">Compare</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#historical">Historical</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center ms-3">
+                    <span class="badge bg-success me-2" id="connectionStatus">
+                        <i class="fas fa-wifi me-1"></i>Live
+                    </span>
+                    <button class="btn btn-outline-light btn-sm" id="refreshBtn">
+                        <i class="fas fa-sync-alt me-1"></i>Refresh
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid py-4">
+        <!-- Location Selector -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <label for="locationSelect" class="form-label fw-bold">Select Location</label>
+                                <select class="form-select" id="locationSelect">
+                                    <option value="Washington_DC">Washington, DC</option>
+                                    <option value="Los_Angeles">Los Angeles, CA</option>
+                                    <option value="New_York">New York, NY</option>
+                                    <option value="Chicago">Chicago, IL</option>
+                                    <option value="Houston">Houston, TX</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-end">
+                                    <div class="text-muted small">Last Updated</div>
+                                    <div id="lastUpdated" class="fw-bold">--:--:--</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current AQI Card -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card aqi-card" id="currentAQICard">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h2 class="card-title mb-2" id="locationName">Washington, DC</h2>
+                                <p class="card-text" id="aqiDescription">Loading air quality data...</p>
+                                <div class="row mt-3">
+                                    <div class="col-4">
+                                        <div class="text-center">
+                                            <div class="pollutant-label">NO₂</div>
+                                            <div class="pollutant-value" id="no2Value">--</div>
+                                            <div class="pollutant-unit">μg/m³</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="text-center">
+                                            <div class="pollutant-label">O₃</div>
+                                            <div class="pollutant-value" id="o3Value">--</div>
+                                            <div class="pollutant-unit">μg/m³</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="text-center">
+                                            <div class="pollutant-label">HCHO</div>
+                                            <div class="pollutant-value" id="hchoValue">--</div>
+                                            <div class="pollutant-unit">μg/m³</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <div class="aqi-display">
+                                    <div class="aqi-number" id="aqiNumber">--</div>
+                                    <div class="aqi-label">AQI</div>
+                                    <div class="aqi-level" id="aqiLevel">--</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts and Map Row -->
+        <div class="row mb-4">
+            <!-- Forecast Chart -->
+            <div class="col-lg-8 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-line me-2"></i>48-Hour Forecast
+                        </h5>
+                        <span class="badge bg-primary" id="forecastPoints">0 points</span>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="forecastChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map -->
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-map-marked-alt me-2"></i>Air Quality Map
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="map" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Health Recommendations -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-heart me-2"></i>Health Recommendations
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="healthRecommendations">
+                            <!-- Health recommendations will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alerts Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Air Quality Alerts
+                        </h5>
+                        <button class="btn btn-sm btn-outline-primary" id="enableNotificationsBtn">
+                            <i class="fas fa-bell me-1"></i>Enable Notifications
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="alertsList">
+                            <!-- Alerts will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Multi-Location Comparison -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-city me-2"></i>Multi-City Comparison
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" id="cityComparison">
+                            <!-- City comparison cards will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historical Data -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-area me-2"></i>Historical Data (Last 30 Days)
+                        </h5>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-sm btn-outline-primary" data-period="7">7 Days</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary active" data-period="30">30 Days</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" data-period="90">90 Days</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="historicalChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ground Truth Validation -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-check-circle me-2"></i>Ground Truth Validation
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="text-center p-3 bg-light rounded">
+                                    <div class="h4 text-success mb-1" id="pandoraAccuracy">--</div>
+                                    <div class="text-muted">Pandora Accuracy</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center p-3 bg-light rounded">
+                                    <div class="h4 text-info mb-1" id="airnowAccuracy">--</div>
+                                    <div class="text-muted">AirNow Accuracy</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center p-3 bg-light rounded">
+                                    <div class="h4 text-warning mb-1" id="modelConfidence">--</div>
+                                    <div class="text-muted">Model Confidence</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Status -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-server me-2"></i>System Status
+                        </h5>
+                        <button class="btn btn-sm btn-outline-primary" id="statusRefreshBtn">
+                            <i class="fas fa-sync-alt me-1"></i>Refresh Status
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="text-center p-3 bg-light rounded">
+                                    <div class="h4 text-primary mb-1" id="activeLocations">0</div>
+                                    <div class="text-muted">Active Locations</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center p-3 bg-light rounded">
+                                    <div class="h4 text-success mb-1" id="dataSources">0</div>
+                                    <div class="text-muted">Data Sources</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center p-3 bg-light rounded">
+                                    <div class="h4 text-info mb-1" id="systemHealth">--</div>
+                                    <div class="text-muted">System Health</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center p-3 bg-light rounded">
+                                    <div class="h4 text-warning mb-1" id="lastCollection">--</div>
+                                    <div class="text-muted">Last Collection</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Data Sources -->
+                        <div class="mt-4">
+                            <h6>Data Sources</h6>
+                            <div class="row" id="dataSourcesList">
+                                <!-- Data sources will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center py-4">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <h5>Loading NASA Air Quality Data...</h5>
+                    <p class="text-muted">Fetching real-time satellite data</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Toast -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="errorToast" class="toast" role="alert">
+            <div class="toast-header bg-danger text-white">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong class="me-auto">Error</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body" id="errorMessage">
+                <!-- Error message will be shown here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

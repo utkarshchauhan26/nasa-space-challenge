@@ -1,0 +1,121 @@
+{
+  "saved_models": {
+    "NO2": {
+      "XGBoost": {
+        "model_file": "models/no2_xgboost_model.pkl",
+        "features_file": "models/no2_features.pkl",
+        "Test_R2": 0.9986857301008435,
+        "Test_RMSE": 136906014996157.0,
+        "Test_MAE": 93309577454261.47,
+        "Test_MAPE": 2.3589221092332067,
+        "Accuracy": 97.6410778907668
+      },
+      "Random Forest": {
+        "model_file": "models/no2_random_forest_model.pkl",
+        "features_file": "models/no2_features.pkl",
+        "Test_R2": 0.9947819330781043,
+        "Test_RMSE": 272794161485080.38,
+        "Test_MAE": 146427000419486.84,
+        "Test_MAPE": 3.5064435431246106,
+        "Accuracy": 96.4935564568754
+      }
+    },
+    "O3": {
+      "XGBoost": {
+        "model_file": "models/o3_xgboost_model.pkl",
+        "features_file": "models/o3_features.pkl",
+        "Test_R2": 0.9998687531891642,
+        "Test_RMSE": 0.0782314114238334,
+        "Test_MAE": 0.05742753799207594,
+        "Test_MAPE": 0.01870870178381951,
+        "Accuracy": 99.98129129821618
+      },
+      "Random Forest": {
+        "model_file": "models/o3_random_forest_model.pkl",
+        "features_file": "models/o3_features.pkl",
+        "Test_R2": 0.9878287180473896,
+        "Test_RMSE": 0.7533641462706792,
+        "Test_MAE": 0.2987252252928627,
+        "Test_MAPE": 0.09727031715943753,
+        "Accuracy": 99.90272968284056
+      }
+    },
+    "HCHO": {
+      "XGBoost": {
+        "model_file": "models/hcho_xgboost_model.pkl",
+        "features_file": "models/hcho_features.pkl",
+        "Test_R2": 0.9284455692634939,
+        "Test_RMSE": 2457580860516615.0,
+        "Test_MAE": 1551987099394167.0,
+        "Test_MAPE": 6.135298505250796,
+        "Accuracy": 93.8647014947492
+      },
+      "Random Forest": {
+        "model_file": "models/hcho_random_forest_model.pkl",
+        "features_file": "models/hcho_features.pkl",
+        "Test_R2": 0.9855442844350372,
+        "Test_RMSE": 1104610959463334.1,
+        "Test_MAE": 442500649302816.75,
+        "Test_MAPE": 2.2077871530973,
+        "Accuracy": 97.7922128469027
+      }
+    }
+  },
+  "performance_summary": [
+    {
+      "Pollutant": "NO2",
+      "Model": "XGBoost",
+      "Test_R2": 0.9986857301008435,
+      "Test_RMSE": 136906014996157.0,
+      "Test_MAE": 93309577454261.47,
+      "Test_MAPE": 2.3589221092332067,
+      "Accuracy(100-MAPE)": 97.6410778907668
+    },
+    {
+      "Pollutant": "NO2",
+      "Model": "Random Forest",
+      "Test_R2": 0.9947819330781043,
+      "Test_RMSE": 272794161485080.38,
+      "Test_MAE": 146427000419486.84,
+      "Test_MAPE": 3.5064435431246106,
+      "Accuracy(100-MAPE)": 96.4935564568754
+    },
+    {
+      "Pollutant": "O3",
+      "Model": "XGBoost",
+      "Test_R2": 0.9998687531891642,
+      "Test_RMSE": 0.0782314114238334,
+      "Test_MAE": 0.05742753799207594,
+      "Test_MAPE": 0.01870870178381951,
+      "Accuracy(100-MAPE)": 99.98129129821618
+    },
+    {
+      "Pollutant": "O3",
+      "Model": "Random Forest",
+      "Test_R2": 0.9878287180473896,
+      "Test_RMSE": 0.7533641462706792,
+      "Test_MAE": 0.2987252252928627,
+      "Test_MAPE": 0.09727031715943753,
+      "Accuracy(100-MAPE)": 99.90272968284056
+    },
+    {
+      "Pollutant": "HCHO",
+      "Model": "XGBoost",
+      "Test_R2": 0.9284455692634939,
+      "Test_RMSE": 2457580860516615.0,
+      "Test_MAE": 1551987099394167.0,
+      "Test_MAPE": 6.135298505250796,
+      "Accuracy(100-MAPE)": 93.8647014947492
+    },
+    {
+      "Pollutant": "HCHO",
+      "Model": "Random Forest",
+      "Test_R2": 0.9855442844350372,
+      "Test_RMSE": 1104610959463334.1,
+      "Test_MAE": 442500649302816.75,
+      "Test_MAPE": 2.2077871530973,
+      "Accuracy(100-MAPE)": 97.7922128469027
+    }
+  ],
+  "training_date": "2025-09-28T13:58:01.994253"
+}

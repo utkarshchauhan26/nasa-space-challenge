@@ -1,0 +1,321 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+
+/* stylelint-disable-next-line at-rule-no-unknown */
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #0B0D17; /* Deep Navy */
+  --foreground: #f8fafc; /* Off-White */
+  --card: rgba(11, 13, 23, 0.8); /* Glass effect with deep navy */
+  --card-foreground: #f8fafc;
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: #0A3D91; /* NASA Blue */
+  --primary-foreground: #f8fafc;
+  --secondary: rgba(75, 0, 130, 0.3); /* Space Purple with opacity */
+  --secondary-foreground: #f8fafc;
+  --muted: rgba(31, 41, 55, 0.4);
+  --muted-foreground: rgba(248, 250, 252, 0.7);
+  --accent: #4B0082; /* Space Purple */
+  --accent-foreground: #f8fafc;
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: rgba(10, 61, 145, 0.2); /* NASA Blue border */
+  --input: rgba(31, 41, 55, 0.8);
+  --ring: rgba(10, 61, 145, 0.4);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+  /* Health levels */
+  --success: #28a745; /* Good */
+  --warning: #ffc107; /* Moderate */
+  --danger: #e63946; /* Hazardous */
+  /* background overlay tokens for subtle starfield + grid + vignette */
+  --bg-star: color-mix(in oklab, var(--foreground) 14%, transparent);
+  --bg-grid: color-mix(in oklab, var(--foreground) 7%, transparent);
+  --bg-vignette: color-mix(in oklab, var(--background) 70%, var(--foreground) 10%);
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #f8fafc;
+  --card: #0a0a0a;
+  --card-foreground: #f8fafc;
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: #0b3d91;
+  --primary-foreground: #f8fafc;
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: #fc3d21;
+  --accent-foreground: #0a0a0a;
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: #1f2937;
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+  /* Health levels */
+  --success: #28a745; /* Good */
+  --warning: #ffc107; /* Moderate */
+  --danger: #e63946; /* Hazardous */
+  /* dark mode variants for background overlays */
+  --bg-star: color-mix(in oklab, var(--foreground) 18%, transparent);
+  --bg-grid: color-mix(in oklab, var(--foreground) 10%, transparent);
+  --bg-vignette: color-mix(in oklab, var(--background) 75%, var(--foreground) 12%);
+}
+
+/* stylelint-disable-next-line at-rule-no-unknown */
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-geist-sans);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  /* Health status tokens */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+}
+
+@layer base {
+  * {
+    /* stylelint-disable-next-line at-rule-no-unknown */
+    @apply border-border outline-ring/50;
+  }
+  body {
+    /* stylelint-disable-next-line at-rule-no-unknown */
+    @apply bg-background text-foreground;
+    /* Futuristic NASA space background with animated gradients and particles */
+    background: 
+      /* Moving starfield particles */
+      radial-gradient(0.5px 0.5px at 20px 30px, rgba(255, 255, 255, 0.8), transparent),
+      radial-gradient(0.5px 0.5px at 40px 70px, rgba(10, 61, 145, 0.6), transparent),
+      radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.4), transparent),
+      radial-gradient(0.8px 0.8px at 130px 80px, rgba(75, 0, 130, 0.7), transparent),
+      radial-gradient(0.6px 0.6px at 160px 30px, rgba(255, 255, 255, 0.9), transparent),
+      radial-gradient(0.4px 0.4px at 200px 90px, rgba(10, 61, 145, 0.5), transparent),
+      
+      /* Nebula gradient layers with animation */
+      linear-gradient(135deg, 
+        rgba(11, 13, 23, 1) 0%,
+        rgba(10, 61, 145, 0.1) 25%,
+        rgba(75, 0, 130, 0.08) 50%,
+        rgba(11, 13, 23, 0.95) 75%,
+        rgba(11, 13, 23, 1) 100%
+      ),
+      
+      /* Deep space base */
+      radial-gradient(ellipse at 20% 50%, rgba(10, 61, 145, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(75, 0, 130, 0.12) 0%, transparent 50%),
+      
+      /* Base color */
+      var(--background);
+      
+    background-size: 
+      250px 250px, 300px 300px, 200px 200px, 350px 350px, 180px 180px, 220px 220px,
+      100% 100%,
+      100% 100%, 100% 100%,
+      100% 100%;
+      
+    background-attachment: fixed;
+    animation: starfield 120s linear infinite;
+  }
+  
+  @keyframes starfield {
+    0% { background-position: 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+    100% { background-position: 250px 250px, -300px 300px, 200px -200px, -350px 350px, 180px -180px, -220px 220px, 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+  }
+  
+  }
+
+/* Leaflet Map Overrides */
+.leaflet-container {
+  height: 100% !important;
+  width: 100% !important;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.leaflet-popup-content-wrapper {
+  background: rgba(11, 13, 23, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(10, 61, 145, 0.3) !important;
+  border-radius: 0.75rem !important;
+  color: #f8fafc !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+.leaflet-popup-content {
+  color: #f8fafc !important;
+  margin: 0 !important;
+  font-family: inherit !important;
+}
+
+.leaflet-popup-tip {
+  background: rgba(11, 13, 23, 0.95) !important;
+  border: 1px solid rgba(10, 61, 145, 0.3) !important;
+}
+
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+.leaflet-control-zoom a {
+  background: rgba(11, 13, 23, 0.9) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(10, 61, 145, 0.2) !important;
+  color: #f8fafc !important;
+  font-weight: bold !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: rgba(10, 61, 145, 0.8) !important;
+  border-color: rgba(10, 61, 145, 0.5) !important;
+}
+
+  /* Custom glass panel styles */
+  .glass-panel {
+    background: rgba(11, 13, 23, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(10, 61, 145, 0.2);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 0 0 1px rgba(10, 61, 145, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-card {
+    background: rgba(11, 13, 23, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(10, 61, 145, 0.2);
+    border-radius: 0.75rem;
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 0 0 1px rgba(10, 61, 145, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }  .glass-panel:hover {
+    background: rgba(11, 13, 23, 0.4);
+    border-color: rgba(10, 61, 145, 0.4);
+    box-shadow: 
+      0 12px 40px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15),
+      0 0 0 1px rgba(10, 61, 145, 0.2),
+      0 0 20px rgba(10, 61, 145, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  /* Hero nebula effect */
+  .hero-nebula {
+    position: absolute;
+    top: -50%;
+    left: -20%;
+    right: -20%;
+    bottom: -50%;
+    background: 
+      radial-gradient(ellipse at 30% 40%, rgba(10, 61, 145, 0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 60%, rgba(75, 0, 130, 0.12) 0%, transparent 60%);
+    filter: blur(40px);
+    animation: nebula-pulse 8s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  @keyframes nebula-pulse {
+    0% { opacity: 0.3; transform: scale(1) rotate(0deg); }
+    100% { opacity: 0.6; transform: scale(1.1) rotate(5deg); }
+  }
+  
+  /* Particle animations */
+  .particle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .particle:nth-child(odd) {
+    animation-delay: -2s;
+    background: rgba(10, 61, 145, 0.4);
+  }
+  
+  .particle:nth-child(3n) {
+    animation-delay: -4s;
+    background: rgba(75, 0, 130, 0.3);
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) translateX(0px) scale(1); opacity: 0.4; }
+    25% { transform: translateY(-20px) translateX(10px) scale(1.1); opacity: 0.8; }
+    50% { transform: translateY(-10px) translateX(-5px) scale(0.9); opacity: 0.6; }
+  75% { transform: translateY(-30px) translateX(-10px) scale(1.05); opacity: 0.9; }
+}
