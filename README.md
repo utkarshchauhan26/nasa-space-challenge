@@ -51,7 +51,11 @@ cd nasa-space-challenge
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+# On Windows:
+venv\Scripts\activate
+# On macOS/Linux:
+source venv/bin/activate
+
 pip install -r requirements.txt
 python main.py
 ```
@@ -75,7 +79,10 @@ pnpm dev             # or npm run dev
 ## 👥 Team
 
 - Utkarsh Chauhan
-- [Add your teammates here]
+- Suraj Mishara
+- Modit
+- Disha Chauhan
+- Vaibhav
 
 ---
 
@@ -83,7 +90,7 @@ pnpm dev             # or npm run dev
 
 | Dashboard | Map View | Health Tips |
 |-----------|----------|-------------|
-| ![Dashboard](frontend/public/screenshot-dashboard.png) | ![Map](frontend/public/screenshot-map.png) | ![Health](frontend/public/screenshot-health.png) |
+| ![Dashboard](https://github.com/user-attachments/assets/760a2129-8475-4f8a-9ad5-0f0792684343) | ![Map](https://github.com/user-attachments/assets/3a06e4fc-860d-4e5a-ac62-887bf47e1019) | ![Health](https://github.com/user-attachments/assets/b2155946-2ff4-4397-a7af-b01e61ff0a83) |
 
 ---
 
